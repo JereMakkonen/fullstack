@@ -36,6 +36,10 @@ const App = () => {
           setTimeout(() => { setNotification(null) }, 5000)
           setNewPerson({ name: '', number: '' })
         })
+        .catch(error => {
+          setNotification({ type: "error", message: error.response.data.error })
+          setTimeout(() => { setNotification(null) }, 5000)
+        })
     }
   }
 
@@ -62,10 +66,15 @@ const App = () => {
         setTimeout(() => { setNotification(null) }, 5000)
         setNewPerson({ name: '', number: '' })
       })
-      .catch(() => {
-        setNotification({ type: "error", message: `${person.name} was already removed` })
+      .catch(error => {
+        console.log(error.response.status)
+        if (error.response.status == 400)
+          setNotification({ type: "error", message: error.response.data.error })
+        else {
+          setNotification({ type: "error", message: `${person.name} was already removed` })
+          setPersons(persons.filter(p => p.id !== person.id))
+        }
         setTimeout(() => { setNotification(null) }, 5000)
-        setPersons(persons.filter(p => p.id !== person.id))
       })
   }
 
