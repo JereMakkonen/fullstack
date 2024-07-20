@@ -35,8 +35,12 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
+  const { title, author, url, likes } = request.body
+
   const blog  = await Blog.findByIdAndUpdate(request.params.id,
-    request.body, { new: true, runValidators: true })
+    { title, author, url, likes },
+    { new: true, runValidators: true }
+  ).populate('user', { username: 1, name: 1, id: 1 })
 
   if (!blog) return response.status(400).send({ error: 'malformatted id' })
   response.json(blog)
