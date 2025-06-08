@@ -1,6 +1,35 @@
 .notification {
-  font-size: 20px;
-  border-style: solid;
-  padding: 10px;
-  margin-bottom: 10px;
+  font-size: 1.5rem;
+  border: solid 0.1rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.navBar {
+  background: lightgrey;
+  padding: 0.75rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blogList {
+  border: solid 0.1rem;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  list-style-type: none;
+}
+
+.formInput {
+  display: grid;
+  width: 10rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }

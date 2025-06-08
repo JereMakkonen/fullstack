@@ -1,45 +1,41 @@
 import { useEffect } from 'react'
-import blogService from './services/blogs'
-import BlogList from './components/BlogList'
-import BlogForm from './components/BlogForm'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import Toggle from './components/Toggle'
-import { setBlogs } from './reducers/blogsReducer'
+import { Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, initUser } from './reducers/userReducer'
+import { initBlogs } from './reducers/blogsReducer'
+import { initCurrentUser } from './reducers/loginReducer'
+import { initUsers } from './reducers/usersReducer'
+
+import BlogList from './components/BlogList'
+import Blog from './components/Blog'
+import Users from './components/Users'
+import UserInfo from './components/UserInfo'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
+import NavBar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.currentUser)
 
   useEffect(() => {
-    dispatch(initUser())
-    blogService.getAll().then(blogs => dispatch(setBlogs(blogs)))
+    dispatch(initCurrentUser())
+    dispatch(initUsers())
+    dispatch(initBlogs())
   }, [])
 
-  const handleLogout = () => dispatch(logout())
+  if (!user) return <LoginForm />
 
   return (
     <div>
-      {user ? (
-        <div>
-          <h2>blogs</h2>
-          <Notification />
-          {user.name || user.username} logged in <button onClick={handleLogout}>logout</button>
-          <Toggle id="blogForm" label={['new blog', 'cancel']}>
-            <h3>create new blog</h3>
-            <BlogForm />
-          </Toggle>
-          <BlogList />
-        </div>
-      ) : (
-        <div>
-          <h2>log in to application</h2>
-          <Notification />
-          <LoginForm />
-        </div>
-      )}
+      <NavBar name={user.name || user.username} />
+      <Notification />
+      <h2>Blog app</h2>
+      <Routes>
+        <Route path="/" element={<BlogList />} />
+        <Route path="/blogs/:id" element={<Blog />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<UserInfo />} />
+      </Routes>
     </div>
   )
 }

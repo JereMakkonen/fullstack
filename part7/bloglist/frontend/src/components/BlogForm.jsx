@@ -6,6 +6,7 @@ const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [visible, setVisible] = useState(false)
 
   const titleHandler = event => setTitle(event.target.value)
   const authorHandler = event => setAuthor(event.target.value)
@@ -16,18 +17,31 @@ const BlogForm = () => {
   const onSubmit = async event => {
     event.preventDefault()
     dispatch(addBlog({ title, author, url }))
-    setTitle(''), setAuthor(''), setUrl('')
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    setVisible(false)
   }
 
+  if (!visible) return <button onClick={() => setVisible(true)}>new blog</button>
+
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <div>title: <input id="title" value={title} onChange={titleHandler} /></div>
-        <div>author: <input id="author" value={author} onChange={authorHandler} /></div>
-        <div>url: <input id="url" value={url} onChange={urlHandler} /></div>
-        <div><button type="submit">create</button></div>
+    <div>
+      <h3>Create a new blog</h3>
+      <div className="formInput">
+        title: <input type="text" value={title} onChange={titleHandler} />
       </div>
-    </form>
+      <div className="formInput">
+        author: <input type="text" value={author} onChange={authorHandler} />
+      </div>
+      <div className="formInput">
+        url: <input type="text" value={url} onChange={urlHandler} />
+      </div>
+      <div className="buttons">
+        <button onClick={onSubmit}>create</button>
+        <button onClick={() => setVisible(false)}>Cancel</button>
+      </div>
+    </div>
   )
 }
 

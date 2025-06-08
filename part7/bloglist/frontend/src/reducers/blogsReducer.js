@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
 import { showNotification } from '../reducers/notificationReducer'
-import { setVisibility } from '../reducers/toggleReducer'
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -16,12 +15,16 @@ const blogSlice = createSlice({
   }
 })
 
+export const initBlogs = () => async dispatch => {
+  const blogs = await blogService.getAll()
+  dispatch(setBlogs(blogs))
+}
+
 export const addBlog = newBlog => async dispatch => {
   try {
     const blog = await blogService.create(newBlog)
     dispatch(appendBlog(blog))
     dispatch(showNotification(`${blog.title} by ${blog.author} added`, 5))
-    dispatch(setVisibility('blogForm'))
   } catch (error) {
     dispatch(showNotification(error.message, 5))
   }
@@ -30,7 +33,7 @@ export const addBlog = newBlog => async dispatch => {
 export const likeBlog = blog => async (dispatch, getState) => {
   try {
     await blogService.update(blog)
-    dispatch(setBlogs(getState().blogs.map(b => b.id === blog.id ? blog : b)))
+    dispatch(setBlogs(getState().blogs.map(b => (b.id === blog.id ? blog : b))))
   } catch (error) {
     dispatch(showNotification(error.message, 5))
   }

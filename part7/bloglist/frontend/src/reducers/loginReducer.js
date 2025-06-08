@@ -1,42 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import { showNotification } from '../reducers/notificationReducer'
+import { showNotification } from './notificationReducer'
 
-const userSlice = createSlice({
-  name: 'user',
+const loginSlice = createSlice({
+  name: 'currentUser',
   initialState: null,
   reducers: {
-    setUser(state, action) {
+    setcurrentUser(state, action) {
       return action.payload
     }
   }
 })
 
-export const initUser = () => dispatch => {
-  const user = JSON.parse(window.localStorage.getItem('loggedUser'))
+export const initCurrentUser = () => dispatch => {
+  const user = JSON.parse(window.localStorage.getItem('currentUser'))
   if (user) {
     blogService.setToken(user.token)
-    dispatch(setUser(user))
+    dispatch(setcurrentUser(user))
   }
 }
 
 export const login = credentials => async dispatch => {
   try {
     const user = await loginService.login(credentials)
-    window.localStorage.setItem('loggedUser', JSON.stringify(user))
+    window.localStorage.setItem('currentUser', JSON.stringify(user))
     blogService.setToken(user.token)
-    dispatch(setUser(user))
+    dispatch(setcurrentUser(user))
   } catch (error) {
     dispatch(showNotification('Wrong credentials', 5))
   }
 }
 
 export const logout = () => dispatch => {
-  window.localStorage.removeItem('loggedUser')
+  window.localStorage.removeItem('currentUser')
   blogService.setToken(null)
-  dispatch(setUser(null))
+  dispatch(setcurrentUser(null))
 }
 
-export const { setUser } = userSlice.actions
-export default userSlice.reducer
+export const { setcurrentUser } = loginSlice.actions
+export default loginSlice.reducer
