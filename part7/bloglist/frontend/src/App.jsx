@@ -26,10 +26,9 @@ const App = () => {
   if (!user) return <LoginForm />
 
   return (
-    <div>
+    <div className="container">
       <NavBar name={user.name || user.username} />
       <Notification />
-      <h2>Blog app</h2>
       <Routes>
         <Route path="/" element={<BlogList />} />
         <Route path="/blogs/:id" element={<Blog />} />

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
@@ -23,25 +24,32 @@ const BlogForm = () => {
     setVisible(false)
   }
 
-  if (!visible) return <button onClick={() => setVisible(true)}>new blog</button>
+  if (!visible)
+    return (
+      <Button variant="primary" onClick={() => setVisible(true)}>
+        new blog
+      </Button>
+    )
 
   return (
-    <div>
-      <h3>Create a new blog</h3>
-      <div className="formInput">
-        title: <input type="text" value={title} onChange={titleHandler} />
-      </div>
-      <div className="formInput">
-        author: <input type="text" value={author} onChange={authorHandler} />
-      </div>
-      <div className="formInput">
-        url: <input type="text" value={url} onChange={urlHandler} />
-      </div>
+    <Form onSubmit={onSubmit}>
+      <Form.Group>
+        <Form.Label>title:</Form.Label>
+        <Form.Control type="text" name="title" onChange={titleHandler} />
+        <Form.Label>author:</Form.Label>
+        <Form.Control type="text" name="author" onChange={authorHandler} />
+        <Form.Label>url:</Form.Label>
+        <Form.Control type="text" name="url" onChange={urlHandler} />
+      </Form.Group>
       <div className="buttons">
-        <button onClick={onSubmit}>create</button>
-        <button onClick={() => setVisible(false)}>Cancel</button>
+        <Button variant="primary" type="submit">
+          create
+        </Button>
+        <Button variant="secondary" onClick={() => setVisible(false)}>
+          cancel
+        </Button>
       </div>
-    </div>
+    </Form>
   )
 }
 

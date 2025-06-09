@@ -49,5 +49,14 @@ export const removeBlog = blog => async (dispatch, getState) => {
   }
 }
 
+export const commentBlog = (comment, id) => async (dispatch, getState) => {
+  try {
+    const blog = await blogService.comment({ comment: comment }, id)
+    dispatch(setBlogs(getState().blogs.map(b => (b.id === blog.id ? blog : b))))
+  } catch (error) {
+    dispatch(showNotification(error.message, 5))
+  }
+}
+
 export const { setBlogs, appendBlog } = blogSlice.actions
 export default blogSlice.reducer

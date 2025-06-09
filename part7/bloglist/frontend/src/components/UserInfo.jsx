@@ -8,10 +8,10 @@ const UserInfo = () => {
   if (!user) return null
 
   return (
-    <div>
+    <div className="blog-list">
       <h3>Blogs created by {user.name || user.username}</h3>
       {user.blogs.map(blog => (
-        <li key={blog.id}>{blog.title}</li>
+        <li key={blog.id} className="list">{blog.title}</li>
       ))}
     </div>
   )

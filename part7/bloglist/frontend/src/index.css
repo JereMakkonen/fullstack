@@ -1,35 +1,36 @@
-.notification {
-  font-size: 1.5rem;
-  border: solid 0.1rem;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
+.nav-bar {
+  background: rgb(55, 55, 55);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.3rem;
 }
 
-.navBar {
-  background: lightgrey;
-  padding: 0.75rem;
+.nav-link:hover {
+  color: #929292 !important;
 }
 
-.navItem {
+.login {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-.blogList {
-  border: solid 0.1rem;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+}
+
+.list {
   list-style-type: none;
-}
-
-.formInput {
-  display: grid;
-  width: 10rem;
+  margin-top: 0.5rem;
 }
 
 .buttons {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
