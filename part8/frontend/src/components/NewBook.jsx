@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS, ADD_BOOK } from '../queries'
+import { ALL_AUTHORS, ADD_BOOK, ALL_GENRES, ALL_BOOKS } from '../queries'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -10,9 +10,18 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([])
 
   const [ addBook ] = useMutation(ADD_BOOK, {
-    refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS } ],
+    refetchQueries: result => {
+    const genres = result.data?.addBook?.genres
+    const queries = [
+      { query: ALL_AUTHORS },
+      { query: ALL_GENRES },
+      { query: ALL_BOOKS },
+      ...genres.map(genre => ({ query: ALL_BOOKS, variables: { genre } }))
+    ]
+    return queries
+    },
     onError: (error) =>
-      console.log(error.graphQLErrors.map(e => e.message).join('\n'))
+      console.log(error.graphQLErrors.map((e) => e.message).join('\n')),
   })
 
   if (!props.show) return null
@@ -20,12 +29,11 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
     addBook({ variables: { title, author, published: parseInt(published), genres }})
-    
     setTitle('')
-    setPublished('')
     setAuthor('')
-    setGenres([])
+    setPublished('')
     setGenre('')
+    setGenres([])
   }
 
   const addGenre = () => {
@@ -40,14 +48,14 @@ const NewBook = (props) => {
           title
           <input
             value={title}
-            onChange={({ target }) => setTitle(target.value)}
+            onChange={e => setTitle(e.target.value)}
           />
         </div>
         <div>
           author
           <input
             value={author}
-            onChange={({ target }) => setAuthor(target.value)}
+            onChange={e => setAuthor(e.target.value)}
           />
         </div>
         <div>
@@ -55,13 +63,13 @@ const NewBook = (props) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={e => setPublished(e.target.value)}
           />
         </div>
         <div>
           <input
             value={genre}
-            onChange={({ target }) => setGenre(target.value)}
+            onChange={e => setGenre(e.target.value)}
           />
           <button onClick={addGenre} type="button">
             add genre

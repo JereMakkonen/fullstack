@@ -24,7 +24,7 @@ const typeDefs = `
     title: String!
     published: Int!
     author: Author!
-    genres: [String]
+    genres: [String!]!
     id: ID!
   }
 
@@ -50,6 +50,7 @@ const typeDefs = `
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    allGenres: [String]!
     me: User
   }
   
@@ -58,10 +59,10 @@ const typeDefs = `
       title: String!
       published: Int!
       author: String!
-      genres: [String]
+      genres: [String]!
     ): Book!
     editAuthor(
-      name: String!,
+      name: String!
       setBornTo: Int!
     ): Author
     createUser(
@@ -91,6 +92,12 @@ const resolvers = {
       return Book.find(filter).populate('author')
     },
     allAuthors: async () => Author.find({}),
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = new Set()
+      books.forEach(book  => { book.genres.forEach(genre => genres.add(genre)) })
+      return Array.from(genres).sort()
+    },
     me: (root, args, context) => context.currentUser
   },
   Author: {
@@ -146,7 +153,7 @@ const resolvers = {
       const user = await User.findOne({ username: args.username })
       if ( !user || args.password !== 'secret' ) {
         throw new GraphQLError('wrong credentials', {
-          extensions: { code: 'BAD_USER_INPUT', error }
+          extensions: { code: 'BAD_USER_INPUT' }
         })        
       }
       const userForToken = { username: user.username, id: user._id }
@@ -167,9 +174,13 @@ startStandaloneServer(server, {
     const auth = req ? req.headers.authorization : null
 
     if (auth && auth.startsWith('Bearer ')) {
-      const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
-      const currentUser = await User.findById(decodedToken.id)
-      return { currentUser }
+      try {
+        const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
+        const currentUser = await User.findById(decodedToken.id)
+        return { currentUser }
+      } catch (error) {
+        return {}
+      }
     }
   },
 }).then(({ url }) => {
