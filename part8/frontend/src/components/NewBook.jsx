@@ -15,7 +15,6 @@ const NewBook = (props) => {
     const queries = [
       { query: ALL_AUTHORS },
       { query: ALL_GENRES },
-      { query: ALL_BOOKS },
       ...genres.map(genre => ({ query: ALL_BOOKS, variables: { genre } }))
     ]
     return queries
