@@ -2,21 +2,21 @@ import { createSlice } from '@reduxjs/toolkit'
 import anecdoteService from '../services/anecdotes'
 
 export const initializeAnecdotes = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
     dispatch(setAnecdotes(anecdotes))
   }
 }
 
-export const addAnecdote = (content) => {
-  return async (dispatch) => {
+export const addAnecdote = content => {
+  return async dispatch => {
     const anecdote = await anecdoteService.createNew(content)
     dispatch(appendAnecdote(anecdote))
   }
 }
 
-export const addVote = (id) => {
-  return async (dispatch) => {
+export const addVote = id => {
+  return async dispatch => {
     const anecdote = await anecdoteService.vote(id)
     dispatch(updateAnecdote(anecdote))
   }
@@ -33,7 +33,7 @@ const anecdoteSlice = createSlice({
       return action.payload
     },
     updateAnecdote(state, action) {
-      return state.map(a => a.id === action.payload.id ? action.payload : a)
+      return state.map(a => (a.id === action.payload.id ? action.payload : a))
     }
   }
 })
