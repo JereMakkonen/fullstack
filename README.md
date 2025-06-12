@@ -1,8 +1,7 @@
 # Full Stack Open
 
 ### Introduction
-This repository holds my solutions for the exercises in parts 0 to 5 from the 
-[Full Stack Open](https://fullstackopen.com/en/) course.
+This repository contains my solutions for the exercises from the [Full Stack Open](https://fullstackopen.com/en/) course.
 
 ### Contents
 - [Part 0: Fundamentals of Web apps](./part0/)
@@ -11,3 +10,11 @@ This repository holds my solutions for the exercises in parts 0 to 5 from the
 - [Part 3: Programming a server with NodeJS and Express](./part3/)
 - [Part 4: Testing Express servers, user administration](./part4/)
 - [Part 5: Testing React apps](./part5/)
+- [Part 6: Advanced state management](./part6/)
+- [Part 7: React router, custom hooks, styling app with CSS and webpack](./part7/)
+- [Part 8: GraphQL](./part8/)
+- [Part 9: TypeScript](./part9/)
+- [Part 10: React Native](./part10/)
+- [Part 11: CI/CD](./part11/)
+- [Part 12: Containers](./part12/)
+- [Part 13: Using relational databases](./part13/)
