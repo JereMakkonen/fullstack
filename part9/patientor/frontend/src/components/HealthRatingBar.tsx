@@ -25,16 +25,21 @@ const HEALTHBAR_TEXTS = [
 ];
 
 const HealthRatingBar = ({ rating, showText }: BarProps) => {
+  const healthBarStyle = { 
+    display: "flex", 
+    alignItems: "center", 
+    gap: "0.5rem",
+  };
+
   return (
-    <div className="health-bar">
+    <div className="health-bar" style={healthBarStyle}>
+      {showText ? HEALTHBAR_TEXTS[rating] : null}
       <StyledRating
         readOnly
         value={4 - rating}
         max={4}
         icon={<Favorite fontSize="inherit" />}
       />
-
-      {showText ? <p>{HEALTHBAR_TEXTS[rating]}</p> : null}
     </div>
   );
 };

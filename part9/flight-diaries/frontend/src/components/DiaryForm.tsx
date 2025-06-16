@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import axios from 'axios';
-import { useState, Dispatch, SetStateAction } from 'react';
 import { addDiaryEntry } from '../diaryService';
 import { Weather, Visibility, DiaryEntry } from '../types';
 
 type DiaryFormProps = {
-  setDiaries: Dispatch<SetStateAction<DiaryEntry[]>>;
+  setDiaries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
 };
 
 const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
